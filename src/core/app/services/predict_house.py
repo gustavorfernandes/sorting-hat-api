@@ -1,8 +1,8 @@
 import numpy as np
-from keras.utils import to_categorical
+from keras.api.utils import to_categorical
 
 
-class PredictHouseUseCase:
+class PredictHouseService:
     def __init__(self, model):
         self.model = model
 

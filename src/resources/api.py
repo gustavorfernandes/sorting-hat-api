@@ -1,23 +1,21 @@
 import numpy as np
 from fastapi import FastAPI
-from pydantic import BaseModel
-from use_cases import PredictHouseUseCase
-from frameworks_and_drivers import create_model
+from core.app.services.predict_house import PredictHouseService
+from core.infra.keras_model import create_keras_model
+from core.infra.pydantic_base_model import UserResponseRequest
 
 app = FastAPI()
-model = create_model()
-predict_house_use_case = PredictHouseUseCase(model)
-
-
-class UserResponseRequest(BaseModel):
-    responses: list
+model = create_keras_model()
+predict_house_use_case = PredictHouseService(model)
 
 
 houses = ['Grifinória', 'Sonserina', 'Corvinal', 'Lufa-Lufa']
 
+
 @app.get("/")
 def read_root():
     return {"message": "The Sorting Hat AI is running"}
+
 
 @app.post("/predict")
 def predict(user_response: UserResponseRequest):

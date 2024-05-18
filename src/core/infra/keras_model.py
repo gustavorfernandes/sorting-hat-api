@@ -1,8 +1,8 @@
-from keras.models import Sequential
-from keras.layers import Dense
+from keras.api.models import Sequential
+from keras.api.layers import Dense
 
 
-def create_model():
+def create_keras_model():
     model = Sequential()
     model.add(Dense(64, input_dim=10, activation='relu'))
     model.add(Dense(32, activation='relu'))
