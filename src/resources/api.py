@@ -1,8 +1,7 @@
 import numpy as np
 from fastapi import FastAPI
-from core.app.services.predict_house import PredictHouseService
-from core.infra.keras_model import create_keras_model
-from core.infra.pydantic_base_model import UserResponseRequest
+from core.app.services import PredictHouseService
+from core.infra import create_keras_model, UserResponseRequest
 
 app = FastAPI()
 model = create_keras_model()
