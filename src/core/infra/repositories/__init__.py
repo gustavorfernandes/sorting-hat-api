@@ -1,0 +1,1 @@
+from .house_repository_mongo import MongoHouseRepository

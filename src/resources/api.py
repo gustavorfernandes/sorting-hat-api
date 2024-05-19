@@ -1,11 +1,14 @@
 import numpy as np
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from core.app.services import PredictHouseService
 from core.infra import create_keras_model, UserResponseRequest
+from core.domain.entities import HouseModel
+from core.infra.repositories.house_repository_mongo import MongoHouseRepository
 
 app = FastAPI()
 model = create_keras_model()
 predict_house_use_case = PredictHouseService(model)
+house_repo = MongoHouseRepository()
 
 
 houses = ['Grifinória', 'Sonserina', 'Corvinal', 'Lufa-Lufa']
@@ -14,6 +17,15 @@ houses = ['Grifinória', 'Sonserina', 'Corvinal', 'Lufa-Lufa']
 @app.get("/")
 def read_root():
     return {"message": "The Sorting Hat AI is running"}
+
+
+@app.get("/house/{title}", response_model=HouseModel)
+async def get_house(title: str):
+    house = house_repo.get_house_info(title)
+    if house:
+        return house
+    else:
+        raise HTTPException(status_code=404, detail="House not found")
 
 
 @app.post("/predict")
