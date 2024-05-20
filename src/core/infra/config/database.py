@@ -2,6 +2,7 @@ import os
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from dotenv import load_dotenv
+from gridfs import GridFS
 
 load_dotenv()
 
@@ -23,5 +24,7 @@ mongo_client = get_mongo_client()
 
 if mongo_client:
     db = mongo_client.hogwarts
+    fs = GridFS(db)
 else:
     db = None
+    fs = None

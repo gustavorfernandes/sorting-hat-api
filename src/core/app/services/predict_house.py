@@ -1,5 +1,11 @@
 import numpy as np
 from keras.api.utils import to_categorical
+from core.infra.repositories.house_repository_mongo import MongoHouseRepository
+from core.domain.entities import HouseModel
+
+
+house_repo = MongoHouseRepository()
+houses = ['griffindor', 'slytherin', 'ravenclaw', 'hufflepuff']
 
 
 class PredictHouseService:
@@ -15,7 +21,11 @@ class PredictHouseService:
         loss, accuracy = self.model.evaluate(data, labels)
         return loss, accuracy
 
-    def predict(self, new_responses):
+    def predict(self, new_responses) -> HouseModel:
         prediction = self.model.predict(np.array([new_responses]))
         house_index = np.argmax(prediction)
-        return house_index, prediction[0]
+
+        return house_repo.get_house_info(houses[house_index])
+
+    def upload_image(self, file):
+        return house_repo.upload_image(file)
