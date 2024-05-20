@@ -1,0 +1,1 @@
+from .house_repository import HouseRepository

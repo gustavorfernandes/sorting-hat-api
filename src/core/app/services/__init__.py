@@ -1,1 +1,1 @@
-from .predict_house import PredictHouseService
+from .house_service import HouseService

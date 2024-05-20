@@ -1,6 +1,6 @@
 import os
-from core.infra.config.database import db
-from core.domain.entities import HouseModel
+from core.infra.pymongo.database_connection import db
+from core.domain.models import HouseModel
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -8,7 +8,7 @@ load_dotenv()
 base_url = os.getenv("BASE_URL")
 
 
-class MongoHouseRepository:
+class HouseRepository:
     def __init__(self):
         self.collection = db.house if db is not None else None
 
@@ -19,11 +19,11 @@ class MongoHouseRepository:
                 crest_url = None
                 file_id = house.get("crest_url_id")
                 if file_id:
-                    crest_url = f"${base_url}/image/{file_id}"
+                    crest_url = f"{base_url}/image/{file_id}"
                 return HouseModel(
                     title=house["title"],
                     description=house["description"],
                     quote=house["quote"],
-                    crest_url_id=crest_url
+                    crest_url=crest_url
                 )
         return None

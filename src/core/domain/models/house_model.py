@@ -5,4 +5,4 @@ class HouseModel(BaseModel):
     title: str
     description: str
     quote: str
-    crest_url_id: str
+    crest_url: str

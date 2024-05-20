@@ -1,14 +1,14 @@
 import numpy as np
 from keras.api.utils import to_categorical
-from core.infra.repositories.house_repository_mongo import MongoHouseRepository
-from core.domain.entities import HouseModel
+from core.domain.repositories.house_repository import HouseRepository
+from core.domain.models import HouseModel
 
 
-house_repo = MongoHouseRepository()
+house_repo = HouseRepository()
 houses = ['griffindor', 'slytherin', 'ravenclaw', 'hufflepuff']
 
 
-class PredictHouseService:
+class HouseService:
     def __init__(self, model):
         self.model = model
 
