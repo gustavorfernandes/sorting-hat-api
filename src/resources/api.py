@@ -1,8 +1,11 @@
 import numpy as np
-from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import StreamingResponse
 from core.app.services import PredictHouseService
 from core.infra import create_keras_model, UserResponseRequest
 from core.infra.repositories.house_repository_mongo import MongoHouseRepository
+from core.infra.config.database import fs
+from bson import ObjectId
 
 app = FastAPI()
 model = create_keras_model()
@@ -34,11 +37,8 @@ def evaluate(data: list, labels: list):
     return {"loss": loss, "accuracy": accuracy}
 
 
-@app.post("/upload")
-def upload(file: UploadFile = File(...)):
-    try:
-        predict_house_service.upload_image(file)
-        return {"status": "success", "message": "File uploaded successfully"}
-    except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"An error occurred: {str(e)}")
+@app.get("/image/{file_id}")
+async def get_image(file_id: str):
+    image_file = fs.get(ObjectId(file_id))
+    if image_file:
+        return StreamingResponse(image_file, media_type='image/jpg')

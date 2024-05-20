@@ -1,9 +1,9 @@
 class House:
-    def __init__(self, title, description, quote, crest_url):
+    def __init__(self, title, description, quote, crest_url_id):
         self._title = title
         self._description = description
         self._quote = quote
-        self._crest_url = crest_url
+        self._crest_url_id = crest_url_id
 
     @property
     def title(self):
@@ -30,12 +30,12 @@ class House:
         self._quote = quote
 
     @property
-    def crest_url(self):
-        return self._crest_url
+    def crest_url_id(self):
+        return self._crest_url_id
 
-    @crest_url.setter
-    def crest_url(self, crest_url):
-        self._crest_url = crest_url
+    @crest_url_id.setter
+    def crest_url_id(self, crest_url_id):
+        self._crest_url_id = crest_url_id
 
     def __repr__(self):
-        return f"House(title={self.title}, description={self.description}, quote={self.quote}, crest_url={self.crest_url})"
+        return f"House(title={self.title}, description={self.description}, quote={self.quote}, crest_url_id={self.crest_url_id})"

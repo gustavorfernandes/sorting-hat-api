@@ -1,6 +1,11 @@
-from core.infra.config.database import db, fs
+import os
+from core.infra.config.database import db
 from core.domain.entities import HouseModel
-from fastapi import UploadFile
+from dotenv import load_dotenv
+
+load_dotenv()
+
+base_url = os.getenv("BASE_URL")
 
 
 class MongoHouseRepository:
@@ -11,16 +16,14 @@ class MongoHouseRepository:
         if self.collection is not None:
             house = self.collection.find_one({"title": title})
             if house:
+                crest_url = None
+                file_id = house.get("crest_url_id")
+                if file_id:
+                    crest_url = f"${base_url}/image/{file_id}"
                 return HouseModel(
                     title=house["title"],
                     description=house["description"],
                     quote=house["quote"],
-                    crest_url=house["crest_url"]
+                    crest_url_id=crest_url
                 )
         return None
-
-    def upload_image(self, file: UploadFile):
-        if self.collection is not None:
-            file_id = fs.put(file.file, filename=file.filename,
-                             content_type=file.content_type)
-        return {"file_id": str(file_id)}
